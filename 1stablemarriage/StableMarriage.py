@@ -1,6 +1,7 @@
 import sys
 import random as rnd
 
+
 def load_file():
     """
     Loads input file and converts it to two lists of women and men.
@@ -16,56 +17,16 @@ def load_file():
     persons = [list(map(int, person)) for person in persons]
     persons = sort_people(persons)
 
-    for i, person in enumerate(persons):
-        if len(set(person[1:])) < len(person[1:]):
-            person = remove_duplicates(person)
-        if len(person[1:]) < nbr_women:
-            person = fill_preferences(person, nbr_women)
-        persons[i] = person
-
     men = persons[1::2]
     women_ineffective = persons[::2]
     women = []
-    for x in range(len(women_ineffective)):
-        women.insert(women_ineffective[x].x)
+    #for x in range(len(women_ineffective)):
+    #    women.insert(women_ineffective[x].x)
 
-    for line in women:
+    for line in women_ineffective:
         line.insert(0, 0)
 
-    return women, men
-
-
-def create_person(nbr, nbr_persons):
-    """
-    If person is missing, we the person with random preferences
-    :param nbr: Name/number of person to add
-    :param nbr_persons: Number of how many persons
-    """
-    return [nbr] + fill_preferences([], nbr_persons)
-
-
-def remove_duplicates(person):
-    """
-    Removes duplicates in a persons preference list.
-    :param person: A person with an initial number and a preference list.
-    :return: Same person but with a duplicate-free preference list.
-    """
-    return [person[0]] + list(set(person[1:]))
-
-
-def fill_preferences(person, nbr_persons):
-    """
-    returns a randomized list of the people which a person is
-    :param person:  A person with an initial number and a preference list.
-    :param nbr_persons: Total number of person of a given sex.
-    :return person: Person with filled preferences.
-    """
-    if not person:
-        return rnd.shuffle([person_num for person_num in range(1, nbr_persons + 1)])
-    pref_list = person[1:]
-    no_pref = [person_num for person_num in range(1, nbr_persons + 1) if person_num not in pref_list]
-    rnd.shuffle(no_pref)
-    return person + no_pref
+    return women_ineffective, men
 
 
 def sort_people(unsorted_list):
@@ -136,10 +97,8 @@ def output(pairs):
     Prints out the man associated with woman with number i at i:th position
     :param pairs: Sorted pairs.
     """
-    f = open("solution_file.txt", "w+")
     for pair in pairs:
-        f.write('{}\n'.format(pair[1]))
-    f.close()
+        print(pair[1])
 
 
 def GS(W, M):
@@ -164,14 +123,9 @@ def GS(W, M):
     """
     pairs = []
     men_no_partner = []
-    women_no_partner = []
     while M:
         m = M[0]
         del M[0]
-        # Check if preference list is empty
-        if len(m) == 1:
-            men_no_partner.append(m[0])
-            continue
         # Due to indexing for the people starts as 1 but python starts list at 0 we need to shift by one.
         w = W[m[1] - 1]
         del m[1]
@@ -195,4 +149,3 @@ if __name__ == '__main__':
     W, M = load_file()
     pairs, _, _ = GS(W, M)
     output(pairs)
-    
