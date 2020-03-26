@@ -43,13 +43,15 @@ def create_person(nbr, nbr_persons):
     """
     return [nbr] + fill_preferences([], nbr_persons)
 
- def remove_duplicates(person):
+
+def remove_duplicates(person):
     """
     Removes duplicates in a persons preference list.
     :param person: A person with an initial number and a preference list.
     :return: Same person but with a duplicate-free preference list.
     """
     return [person[0]] + list(set(person[1:]))
+
 
 def fill_preferences(person, nbr_persons):
     """
@@ -134,8 +136,10 @@ def output(pairs):
     Prints out the man associated with woman with number i at i:th position
     :param pairs: Sorted pairs.
     """
+    f = open("solution_file.txt", "w+")
     for pair in pairs:
-        print(pair[1])
+        f.write('{}\n'.format(pair[1]))
+    f.close()
 
 
 def GS(W, M):
@@ -186,7 +190,9 @@ def GS(W, M):
     pairs = final_pairs(pairs)
     return pairs, women_no_partner, men_no_partner
 
+
 if __name__ == '__main__':
     W, M = load_file()
     pairs, _, _ = GS(W, M)
     output(pairs)
+    
