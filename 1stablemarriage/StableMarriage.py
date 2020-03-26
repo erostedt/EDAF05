@@ -8,8 +8,11 @@ def load_file():
     Loads input file and converts it to two lists of women and men.
     :return: One list of women and one list of men.
     """
+    x=input('Directory and file to read from: ')
     
-    lines = sys.stdin.readlines()
+    #lines = sys.stdin.readlines()
+    lines=open(x,'r')
+    
     lines = [line.strip() for line in lines]
     # removes first number (number of pairs)
     nbr_women = int(lines.pop(0))
