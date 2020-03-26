@@ -1,5 +1,6 @@
 import sys
 import random as rnd
+import textwrap
 
 
 def load_file():
@@ -7,27 +8,31 @@ def load_file():
     Loads input file and converts it to two lists of women and men.
     :return: One list of women and one list of men.
     """
+    
     lines = sys.stdin.readlines()
-
     lines = [line.strip() for line in lines]
     # removes first number (number of pairs)
     nbr_women = int(lines.pop(0))
-
-    persons = [line.split() for line in lines]
+    lines=''.join(lines)
+    lines = ''.join(ch for ch in lines if ch.isdigit())
+    lines=textwrap.wrap(lines, nbr_women+1)
+    
+    persons = [list(line) for line in lines]
     persons = [list(map(int, person)) for person in persons]
     persons = sort_people(persons)
-
+    
     men = persons[1::2]
     women_ineffective = persons[::2]
     women = []
-    #for x in range(len(women_ineffective)):
-    #    women.insert(women_ineffective[x].x)
+    
+    for x in range(len(women_ineffective)):
+        women.insert(x,women_ineffective[x])
 
-    for line in women_ineffective:
+    for line in women:
         line.insert(0, 0)
-
+        
     return women_ineffective, men
-
+    
 
 def sort_people(unsorted_list):
     """
