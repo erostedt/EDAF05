@@ -8,10 +8,10 @@ def load_file():
     Loads input file and converts it to two lists of women and men.
     :return: One list of women and one list of men.
     """
-    x=input('Directory and file to read from: ')
+    #x=input('Directory and file to read from: ')
     
-    #lines = sys.stdin.readlines()
-    lines=open(x,'r')
+    lines = sys.stdin.readlines()
+    #lines=open(x,'r')
     
     lines = [line.strip() for line in lines]
     # removes first number (number of pairs)
@@ -28,14 +28,20 @@ def load_file():
     women_ineffective = persons[::2]
     women = []
     
-    for x in range(len(women_ineffective)):
-        women.insert(x,women_ineffective[x])
+    for i, person in enumerate(women_ineffective):
+        women.append(invert_list(person, nbr_women))
 
     for line in women:
         line.insert(0, 0)
-        
-    return women_ineffective, men
-    
+    return women, men
+
+
+def invert_list(person, nbr_person):
+    pref_list = [0]*nbr_person
+    for i, pref in enumerate(person[1:], start=1):
+        pref_list[pref-1] = i
+    return [person[0]] + pref_list
+
 
 def sort_people(unsorted_list):
     """
@@ -59,7 +65,7 @@ def prefers_new_man(w, m):
     curr_man = w[0]
     new_man = m[0]
     w_preflist = w[2:]
-    if w_preflist.index(new_man) < w_preflist.index(curr_man):
+    if w_preflist[new_man-1] < w_preflist[curr_man-1]:
         return True
     else:
         return False
@@ -155,5 +161,7 @@ def GS(W, M):
 
 if __name__ == '__main__':
     W, M = load_file()
+    print(W)
+    print(M)
     pairs, _, _ = GS(W, M)
     output(pairs)
