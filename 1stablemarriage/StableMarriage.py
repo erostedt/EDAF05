@@ -1,6 +1,4 @@
 import sys
-import random as rnd
-import textwrap
 
 
 def load_file():
@@ -8,22 +6,28 @@ def load_file():
     Loads input file and converts it to two lists of women and men.
     :return: One list of women and one list of men.
     """
-    #x=input('Directory and file to read from: ')
-    
+    #x = input('Directory and file to read from: ')
+
     lines = sys.stdin.readlines()
-    #lines=open(x,'r')
-    
+    #lines = open(x, 'r')
     lines = [line.strip() for line in lines]
+
+    for x in range(len(lines)):
+        lines[x] = lines[x].ljust(len(lines[x]) + 1, ' ')
+
     # removes first number (number of pairs)
     nbr_women = int(lines.pop(0))
-    lines=''.join(lines)
-    lines = ''.join(ch for ch in lines if ch.isdigit())
-    lines=textwrap.wrap(lines, nbr_women+1)
-    
-    persons = [list(line) for line in lines]
+    lines = ''.join(lines)
+
+    lines = lines.split()
+    persons = []
+
+    for x in range(nbr_women * 2):
+        persons.append(lines[x * (nbr_women + 1):x * (nbr_women + 1) + nbr_women + 1])
+
     persons = [list(map(int, person)) for person in persons]
     persons = sort_people(persons)
-    
+
     men = persons[1::2]
     women_ineffective = persons[::2]
     women = []
@@ -33,6 +37,7 @@ def load_file():
 
     for line in women:
         line.insert(0, 0)
+
     return women, men
 
 
@@ -161,7 +166,5 @@ def GS(W, M):
 
 if __name__ == '__main__':
     W, M = load_file()
-    print(W)
-    print(M)
     pairs, _, _ = GS(W, M)
     output(pairs)
