@@ -6,10 +6,7 @@ def load_file():
     Loads input file and converts it to two lists of women and men.
     :return: One list of women and one list of men.
     """
-    #x = input('Directory and file to read from: ')
-
     lines = sys.stdin.readlines()
-    #lines = open(x, 'r')
     lines = [line.strip() for line in lines]
 
     for x in range(len(lines)):
@@ -42,6 +39,11 @@ def load_file():
 
 
 def invert_list(person, nbr_person):
+    """
+    Inverts the preference list.
+    :param person: Person with preference list.
+    :param nbr_person: Number of person for the given sex.
+    """
     pref_list = [0]*nbr_person
     for i, pref in enumerate(person[1:], start=1):
         pref_list[pref-1] = i
@@ -55,9 +57,7 @@ def sort_people(unsorted_list):
     :return: Sorted list.
     """
 
-    return_list = sorted(unsorted_list, key=lambda x: x[0])
-
-    return return_list
+    return sorted(unsorted_list, key=lambda x: x[0])
 
 
 def prefers_new_man(w, m):
