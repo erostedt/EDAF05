@@ -102,15 +102,6 @@ def final_pairs(pairs):
     return sorted(final_pairs, key=lambda pair: pair[0])
 
 
-def get_single_women(W):
-    """
-    Returns all girls that do not have a partner.
-    :param W: Women W.
-    :return: All the single women
-    """
-    return [w[1] for w in W if w[0] == 0]
-
-
 def output(pairs):
     """
     Prints out the man associated with woman with number i at i:th position
@@ -138,10 +129,9 @@ def GS(W, M):
 
     :param W: Women W sorted by their own number.
     :param M: Men M sorted by their own number.
-    :return pairs, women_no_partner, men_no_partner: Stable pairs, women who did not find a partner, men who did not find partner.
+    :return pairs, women_no_partner, men_no_partner: Stable pairs
     """
     pairs = []
-    men_no_partner = []
     while M:
         m = M[0]
         del M[0]
@@ -159,12 +149,11 @@ def GS(W, M):
             w[0] = m[0]
         else:
             M.append(m)
-    women_no_partner = get_single_women(W)
     pairs = final_pairs(pairs)
-    return pairs, women_no_partner, men_no_partner
+    return pairs
 
 
 if __name__ == '__main__':
     W, M = load_file()
-    pairs, _, _ = GS(W, M)
+    pairs = GS(W, M)
     output(pairs)
