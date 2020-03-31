@@ -7,7 +7,7 @@
 \pagestyle{empty}
 
 \title{Stable Matching Report}
-\author{Author 1 and Author 2}
+\author{Eric Rostedt \\ Mattias Pettersson}
 
 \begin{document}
   \maketitle
@@ -15,9 +15,17 @@
   \section{Results}
 
   \todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
+  
+  When running the check\_solution.sh file on our script we got that all solutions where correct. To see how long time the program take we used the time module (python). If one wanted to seriously try to optimize and get a more detailed answer of the execution times, function calls etc, one would use some kind of profiler. However we simply resorted to get a rough estimate of only the execution time. When running the script on the largest dataset (non-sloppy input) we got just under 8 seconds of execution time (7.96, average of 5 runs and using pypy). For the largest dataset (messy input) we got an average execution time of about 7.5 seconds (averaged over 5 runs and using pypy). Out of these roughly 8 seconds of execution time, about 5.5 were spent parsing the input into comprehensible input for the algorithm. Therefore most time is not actually in solving the problem but in parsing the input!
 
   \section{Implementation details}
 
   \todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}
+We implemented the pseudo-code from the course page. The main difference was that we changed the womens' preference lists for the quicker, inverted, version showed in one of the course lectures. \\
 
+We used lists to implement our solution. We loaded the input file and turned it into a big list with every person. We then split it up into one list containing every man's preference list and one list with every woman's preference list. In every woman's list we reserved the first element for her current man, the second element for her own number, and the following elements were the ones of the men in her preference-list. In the corresponding lists for the men the first element was assigned to their own number, and the following ones were the women in his preference list.\\
+
+We also had a list containing all men that hadn't been assigned to a partner yet, and a final list containing the resulting pairs.\\
+
+The total running time was 50.88 seconds. That is longer than if the script was run on the individual files. This has to do with the test-script but we are not sure exactly why.
 \end{document}
