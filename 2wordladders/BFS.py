@@ -18,13 +18,17 @@ def parse():
     lines = [line.rstrip() for line in lines]
 
     words = lines[:num_words]
-    _queries = lines[num_words+1:]
+    _queries = lines[num_words:]
     _queries = [query.split() for query in _queries]
 
     nodes = []
     for word in words:
-        nodes.append(Node(word, None))
+        nodes.append(Node(word, []))
 
+    for node in nodes:
+        neighbours = get_neighbours(node.node, words)
+        for neighbour in neighbours:
+            node.neighbours.append(get_node(neighbour, nodes))
 
     queries = []
     for start, end in _queries:
@@ -57,6 +61,12 @@ def get_neighbours(word, words):
     return neighbours
 
 
+def get_node(word, nodes):
+    for node in nodes:
+        if word == node.node:
+            return node
+
+
 def BFS(tree, s, t):
     q = []
     nmbr_of_moves = 0
@@ -75,17 +85,21 @@ def BFS(tree, s, t):
                 q.append(neighbour)
                 neighbour.pred = v
                 if neighbour == t:
-                    print('found path s-t')
+                    #print('found path s-t')
                     while neighbour.pred:
                         nmbr_of_moves = nmbr_of_moves+1
                         neighbour = neighbour.pred
                     return nmbr_of_moves
-    print('found no path s-t')
+    #print('found no path s-t')
 
 
 if __name__ == '__main__':
     nodes, queries = parse()
     for query in queries:
         nbr_moves = BFS(nodes, query[0], query[1])
+        if nbr_moves is None:
+            print('Impossible')
+        else:
+            print(nbr_moves)
 
 
