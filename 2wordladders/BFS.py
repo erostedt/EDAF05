@@ -1,4 +1,5 @@
 import sys
+from time import time
 
 
 class Node:
@@ -68,6 +69,7 @@ def get_node(word, nodes):
 
 
 def BFS(tree, s, t):
+
     q = []
     nmbr_of_moves = 0
 
@@ -76,7 +78,7 @@ def BFS(tree, s, t):
 
     s.visited = True
     q.append(s)
-
+    if s.node == t.node: return 0
     while q:
         v = q.pop(0)
         for neighbour in v.neighbours:
@@ -86,20 +88,21 @@ def BFS(tree, s, t):
                 neighbour.pred = v
                 if neighbour == t:
                     #print('found path s-t')
-                    while neighbour.pred:
+                    while neighbour.pred.node != s.node:
                         nmbr_of_moves = nmbr_of_moves+1
                         neighbour = neighbour.pred
-                    return nmbr_of_moves
+                    return nmbr_of_moves + 1
     #print('found no path s-t')
 
 
 if __name__ == '__main__':
     nodes, queries = parse()
+    time_start = time()
     for query in queries:
         nbr_moves = BFS(nodes, query[0], query[1])
-        if nbr_moves is None:
-            print('Impossible')
-        else:
-            print(nbr_moves)
-
+    #    if nbr_moves is None:
+    #        print('Impossible')
+    #    else:
+    #        print(nbr_moves)
+    print(time() - time_start)
 
