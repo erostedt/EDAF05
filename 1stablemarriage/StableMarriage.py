@@ -1,4 +1,5 @@
 import sys
+from time import time
 
 
 def load_file():
@@ -26,6 +27,9 @@ def load_file():
     persons = sort_people(persons)
 
     men = persons[1::2]
+    for m in range(len(men)):
+        men[m] = [men[m][0]] + list(reversed(men[m][1:]))
+
     women_ineffective = persons[::2]
     women = []
     
@@ -132,12 +136,13 @@ def GS(W, M):
     :return pairs, women_no_partner, men_no_partner: Stable pairs
     """
     pairs = []
+    M = list(reversed(M))
     while M:
-        m = M[0]
-        del M[0]
+        m = M[-1]
+        del M[-1]
         # Due to indexing for the people starts as 1 but python starts list at 0 we need to shift by one.
-        w = W[m[1] - 1]
-        del m[1]
+        w = W[m[-1] - 1]
+        del m[-1]
         if w[0] == 0:
             pairs.append((w, m))
             w[0] = m[0]
@@ -154,6 +159,8 @@ def GS(W, M):
 
 
 if __name__ == '__main__':
+    time_start = time()
     W, M = load_file()
     pairs = GS(W, M)
     output(pairs)
+    
