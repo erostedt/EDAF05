@@ -1,4 +1,4 @@
-def BFS(tree, s, t)
+def BFS(tree, s, t):
     q = []
     nmbr_of_moves =0
 
