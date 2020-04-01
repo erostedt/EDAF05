@@ -1,9 +1,11 @@
 import sys
-from time import time
 
 
 class Node:
-
+    """
+    Class which constructs a Node. This kind of node has 4 attributes. Its own name/which node it is (node),
+    Its neighbours (possible nodes to transition to), if the node has been visited before and its predecessor.
+    """
     def __init__(self, node, neighbours):
         self.node = node
         self.neighbours = neighbours
@@ -11,7 +13,13 @@ class Node:
         self.pred = None
 
 
-def parse():
+def construct_graph():
+    """
+    Reads the data from the input file (from stdin) and constructs a graph of nodes(vertices),
+    where every node has some neighbour nodes which can be directly reached by the current node
+     (which represent the arcs/edges in a graph).
+    :return nodes, queries: List of nodes, List of start nodes and end nodes (used for testing).
+    """
     lines = sys.stdin.readlines()
     num_words, num_queries = lines.pop(0).split(' ')
     num_words, num_queries = int(num_words), int(num_queries)
@@ -45,6 +53,13 @@ def parse():
 
 
 def get_neighbours(word, words):
+    """
+    Takes a word and list of all words and finds, for the word, all other words which contains the four last
+    characters in it.
+    :param word: Current word
+    :param words: All words
+    :return: Names of all neighbours corresponding to the node with name word.
+    """
     ending = word[1:]
     len_ending = len(ending)
     neighbours = []
@@ -63,17 +78,23 @@ def get_neighbours(word, words):
 
 
 def get_node(word, nodes):
+    """
+    Finds the node object which has the name 'word'.
+    :param word: Current word.
+    :param nodes: List of all nodes.
+    :return: Node with name 'word'
+    """
     for node in nodes:
         if word == node.node:
             return node
 
 
-def BFS(tree, s, t):
+def BFS(graph, s, t):
 
     q = []
     nmbr_of_moves = 0
 
-    for v in tree:
+    for v in graph:
         v.visited = False
 
     s.visited = True
@@ -96,13 +117,11 @@ def BFS(tree, s, t):
 
 
 if __name__ == '__main__':
-    nodes, queries = parse()
-    time_start = time()
+    nodes, queries = construct_graph()
     for query in queries:
         nbr_moves = BFS(nodes, query[0], query[1])
-    #    if nbr_moves is None:
-    #        print('Impossible')
-    #    else:
-    #        print(nbr_moves)
-    print(time() - time_start)
+        if nbr_moves is None:
+            print('Impossible')
+        else:
+            print(nbr_moves)
 
