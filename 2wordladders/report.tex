@@ -7,17 +7,26 @@
 \pagestyle{empty}
 
 \title{Word ladders report}
-\author{Author 1 and Author 2}
+\author{Eric Rostedt \\ Mattias Pettersson}
 
 \begin{document}
-  \maketitle
+\maketitle
 
-  \section{Results}
+\section{Results}
 
-  \todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
+\todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?} 
+When we ran the file check\_solution.sh on our script we got that all of our solutions were correct. When running on the largest data set (6large2.in) we get a total running time of about 6.9 seconds (using pypy). About 6.75 of those seconds is in parsing the input and only 0.15 in the actual algorithm. So one can easily say that for this implementation, it is the parsing that takes the majority of the time. 
 
-  \section{Implementation details}
+\section{Implementation details}
 
-  \todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}
+\todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}
+We read the data from the input files using sys.stdin.readlines() and created a tree. We then implemented the pseudo-code from the lecture on BFS in order to do the actual search. \\
 
+We created a node-class that we called for every new node. Each node object contained its "name", an empty list of its potential neighbours, an empty node-object later pointing to its predecessor, and a boolean describing if the node had been visited or not.\\
+
+We then placed all these nodes in a list and looped over them, checking for neighbours using a function (programmed to return the correct node-names according to the instructions) and adding these neighbours to each node's neighbour-list. This created the finished tree.\\
+
+We then started the search where we did exactly like the pseudo-code explained. When we found our target node we retraced our path using the predecessor attribute of each node. \\
+
+The total running time was 30.7 seconds, which is considerably longer than each individual problem.\\
 \end{document}
