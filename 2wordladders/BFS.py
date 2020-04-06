@@ -90,6 +90,14 @@ def get_node(word, nodes):
 
 
 def BFS(graph, s, t):
+    """
+    Implements a BFS in order to find the shortest path from one node to another. If the target node
+    is found, it backtracks through the traversed nodes using the .pred attribute of the node class.
+    :param graph: tree to be traversed.
+    :param s: start node.
+    :param t: target node.
+    :return: the number of nodes it had to traverse in order to find the target node.
+    """
 
     q = []
     nmbr_of_moves = 0
@@ -108,12 +116,11 @@ def BFS(graph, s, t):
                 q.append(neighbour)
                 neighbour.pred = v
                 if neighbour == t:
-                    #print('found path s-t')
                     while neighbour.pred.node != s.node:
                         nmbr_of_moves = nmbr_of_moves+1
                         neighbour = neighbour.pred
                     return nmbr_of_moves + 1
-    #print('found no path s-t')
+
 
 
 if __name__ == '__main__':
