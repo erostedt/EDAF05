@@ -106,3 +106,7 @@ def cycle(node, neighbour):
 if __name__ == '__main__':
     nodes = construct_graph()
     MST = kruskal(nodes)
+    sum_weights = 0
+    for edge in MST:
+        sum_weights += edge[2]
+    print(sum_weights)
