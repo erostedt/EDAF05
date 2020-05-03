@@ -9,8 +9,7 @@ class Node:
     def __init__(self, node, neighbourweights):
         self.node = node
         self.neighbourweights = neighbourweights
-        self.parent = None
-        self.size = 0
+        self.pred = None
 
 
 def construct_graph():
@@ -34,82 +33,3 @@ def construct_graph():
     return nodes
 
 construct_graph()
-
-
-def kruskal(nodes):
-    """
-    Constructs a minimal spanning tree utilizing Kruskal's algorithm.
-    :param nodes: List of node objects.
-    :return MST: Returns list of nodes which represents minimal spanning tree.
-    """
-    MST = []
-    edges = set()
-    for node in nodes:
-        for neighbour, weight in node.neighbourweight:
-            edges.add((node, neighbour, weight))
-
-    edges = sorted(edges, key=lambda w: w[2])
-
-    for edge in edges:
-        node, neighbour, weight = edge
-
-        if not cycle(node, neighbour):
-            union(node, neighbour)
-            MST.append(edge)
-
-    return MST
-
-
-def find(node):
-    """
-    Finds canonical member for the node.
-    :param node: Node object.
-    :return member: Canonical member.
-    """
-    member = node
-    while member.parent:
-        member = member.parent
-    while node.parent:
-        w = node.parent
-        node.parent = member
-        node = w
-    return member
-
-
-def union(node, neighbour):
-    """
-    Merges the set node belongs to with the set neighbour belongs to.
-    :param node: Node object.
-    :param neighbour: Neighbour node object.
-    """
-    node = find(node)
-    neighbour = find(neighbour)
-    if node.size < neighbour.size:
-        node.parent = neighbour
-        neighbour.size = node.parents + neighbour.parents
-    else:
-        neighbour.parent = node
-        node.size = node.parents + neighbour.parents
-
-
-def cycle(node, neighbour):
-    """
-    Checks if a node and a neighbour belongs to the same root, i.e creates a cycle.
-    :param node: Node object.
-    :param neighbour: Neighbour node object.
-    :return: True if they have the same root. False else.
-    """
-    return find(node) is find(neighbour)
-
-
-
-
-
-
-
-
-
-
-
-
-
