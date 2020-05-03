@@ -13,23 +13,20 @@ class Node:
 
 
 def construct_graph():
-    #lines = sys.stdin.readlines()
-    lines=['3 2','3 2 3']
+    lines = sys.stdin.readlines()
     num_nodes, num_roads = lines.pop(0).split(' ')
-    print('2')
+
     for line in range(len(lines)):
         node1, node2, weight = lines[line].split(' ')
         lines[line]=[node1,node2,weight]
 
     nodes = []
-    for num in range(int(num_nodes)):
+    for num in range(int(num_nodes)+1):
         nodes.append(Node(int(num),[]))
-    print(lines)
-    lines[1][1]
+
     for connections in lines:
-        nodes[int(connections[1])].neighbourweights.append[int(connections[2]), int(connections[3])]
-        nodes[int(connections[2])].neighbourweights.append[int(connections[1]), int(connections[3])]
+        nodes[int(connections[0])].neighbourweights.append([nodes[int(connections[1])],int(connections[2])])#,int(connections[2])])
+        nodes[int(connections[1])].neighbourweights.append([nodes[int(connections[0])], int(connections[2])])
+
 
     return nodes
-
-construct_graph()
