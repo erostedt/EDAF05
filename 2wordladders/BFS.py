@@ -117,10 +117,9 @@ def BFS(graph, s, t):
                 neighbour.pred = v
                 if neighbour == t:
                     while neighbour.pred.node != s.node:
-                        nmbr_of_moves = nmbr_of_moves+1
+                        nmbr_of_moves = nmbr_of_moves + 1
                         neighbour = neighbour.pred
                     return nmbr_of_moves + 1
-
 
 
 if __name__ == '__main__':
