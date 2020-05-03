@@ -16,10 +16,10 @@ class Node:
 
 def construct_graph():
     """
-        Reads the data from the input file (from stdin) and constructs a graph of nodes(vertices),
-        where every node has some neighbour node(s) which can be directly reached by the current node
-        by going a certain distance.
-        :return nodes: List of nodes.
+    Reads the data from the input file (from stdin) and constructs a graph of nodes(vertices),
+    where every node has some neighbour node(s) which can be directly reached by the current node
+    by going a certain distance.
+    :return nodes: List of nodes.
     """
     lines = sys.stdin.readlines()
     num_nodes, num_roads = lines.pop(0).split(' ')
