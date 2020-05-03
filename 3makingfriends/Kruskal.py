@@ -10,6 +10,7 @@ class Node:
         self.node = node
         self.neighbourweights = neighbourweights
         self.pred = None
+        self.size = 0
 
 
 def construct_graph():
@@ -32,4 +33,88 @@ def construct_graph():
 
     return nodes
 
-construct_graph()
+
+def kruskal(nodes):
+    """
+    Construct the minimal spanning tree, represented by a list of edges (tuples of node, neighbour node and weight)
+    :param nodes: List of nodes.
+    :return MST: Minimal spanning tree.
+    """
+    MST = []
+    edges = set()
+    for node in nodes:
+        for neighbour, weight in node.neighbours:
+            edges.add((node, neighbour, weight))
+
+    edges = sorted(edges, key=lambda w: w[2])
+
+    for edge in edges:
+        node, neighbour, weight = edge
+
+        if not cycle(node, neighbour):
+            union(node, neighbour)
+            MST.append(edge)
+
+    return MST
+
+
+def find(node):
+    """
+    Finds canonical member of node.
+    :param node: Node object
+    :return member: Canonical member.
+    """
+    member = node
+    while member.parent:
+        member = member.parent
+    while node.parent:
+        node, node.parent = node.parent, member
+    return member
+
+
+def union(node, neighbour):
+    """
+    Merges the set node belongs to with the set that neighbour belongs to.
+    :param node: Node object.
+    :param neighbour: Neighbouring node object.
+    """
+    node = find(node)
+    neighbour = find(neighbour)
+    new_size = node.size + neighbour.size
+    if node.size < neighbour.size:
+        node.parent = neighbour
+        neighbour.size = new_size
+    else:
+        neighbour.parent = node
+        node.size = new_size
+
+
+def cycle(node, neighbour):
+    """
+    Checks if a node and its neighbour has the same root, used to determine if nodes makes a cycle.
+    :param node: Node object.
+    :param neighbour: Neighbouring node object.
+    :return: True if nodes have the same root, false else.
+    """
+    return find(node) is find(neighbour)
+
+
+if __name__ == '__main__':
+    nodes = construct_graph()
+    MST = kruskal(nodes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
