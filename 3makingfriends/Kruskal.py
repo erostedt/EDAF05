@@ -6,7 +6,6 @@ class Node:
     Its neighbours and the weights of the roads there (possible nodes to transition to), its parent and the number
     of children.
     """
-
     def __init__(self, node, neighbourweights):
         self.node = node
         self.neighbourweights = neighbourweights
@@ -47,16 +46,15 @@ def kruskal(nodes):
     MST = []
     edges = set()
     for node in nodes:
-        for neighbour, weight in node.neighbours:
-            edges.add((node, neighbour, weight))
+        for neighbour, weight in node.neighbourweights:
+            if (neighbour, node, weight) not in edges:
+                edges.add((node, neighbour, weight))
 
     edges = sorted(edges, key=lambda w: w[2])
 
     for edge in edges:
         node, neighbour, weight = edge
-
-        if not cycle(node, neighbour):
-            union(node, neighbour)
+        if union(node, neighbour):
             MST.append(edge)
 
     return MST
@@ -72,7 +70,7 @@ def find(node):
     while member.parent:
         member = member.parent
     while node.parent:
-        node, node.parent = node.parent, member
+        node.parent, node = member, node.parent
     return member
 
 
@@ -84,6 +82,10 @@ def union(node, neighbour):
     """
     node = find(node)
     neighbour = find(neighbour)
+
+    if node is neighbour:
+        return False
+
     new_size = node.size + neighbour.size
     if node.size < neighbour.size:
         node.parent = neighbour
@@ -92,15 +94,7 @@ def union(node, neighbour):
         neighbour.parent = node
         node.size = new_size
 
-
-def cycle(node, neighbour):
-    """
-    Checks if a node and its neighbour has the same root, used to determine if nodes makes a cycle.
-    :param node: Node object.
-    :param neighbour: Neighbouring node object.
-    :return: True if nodes have the same root, false else.
-    """
-    return find(node) is find(neighbour)
+    return True
 
 
 if __name__ == '__main__':
