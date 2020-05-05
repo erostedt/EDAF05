@@ -52,9 +52,7 @@ def kruskal(edges):
     :return MST: Minimal spanning tree.
     """
     MST = []
-    time_ = time()
     edges = sorted(edges, key=lambda w: w[2])
-    print('Sort time: ', time()-time_)
 
     for edge in edges:
         node, neighbour, weight = edge
@@ -102,14 +100,9 @@ def union(node, neighbour):
 
 
 if __name__ == '__main__':
-    time_start = time()
     edges = construct_graph()
-    construction_time = time()
-    print('Construction time: ', construction_time-time_start)
     MST = kruskal(edges)
-    print('Algo time: ', time() - construction_time)
     sum_weights = 0
     for edge in MST:
         sum_weights += edge[2]
-    #print(sum_weights)
-    print('Total time: ', time() - time_start)
+    print(sum_weights)
