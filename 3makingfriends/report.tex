@@ -16,7 +16,7 @@
 
 \todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
 
-When we ran the file check\_solution.sh on our script we got that all of our solutions were correct. When running using pypy we get a total running time of about 30 seconds, where 12 seconds are in the parsing, 8 seconds to construct set of edges, 8 seconds in sorting the edges, 2 seconds for the rest of the algorithm, So the algorithm is very fast, but the slow parts are the other things. 
+When we ran the file check\_solution.sh on our script we got that all of our solutions were correct. When running using pypy we get a total running time of about 30 seconds, where 20 seconds are in the parsing, 8 seconds in sorting the edges, 2 seconds for the rest of the algorithm, So the algorithm is slowed down by the sorting. But the largest time is spent parsing the data (which reads data, creates nodes and then constructs edges).
 
 \section{Implementation details}
 
@@ -27,5 +27,5 @@ We created a node-class that we called for every new node. Each node object cont
 
 We then looped over all of the lines in the file to create the tree. The next step was to start the Kruskal algorithm on this tree. The Kruskal algorithm sorts all the weights in the tree and "walks" across the lowest one, saving it. It then continues doing this, but before chosing a weight it checks that no cycles are created. It does this until all nodes are connected to eachother in some way.\\
 
-The total running time was 36 seconds, which is considerably longer than each individual problem.\\
+The total running time was 35 seconds, which is considerably longer than each individual problem.\\
 \end{document}
