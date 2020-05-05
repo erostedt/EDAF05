@@ -1,4 +1,5 @@
 import sys
+from time import time
 
 
 class Node:
@@ -18,8 +19,8 @@ def construct_graph():
     """
     Reads the data from the input file (from stdin) and constructs a graph of nodes(vertices),
     where every node has some neighbour node(s) which can be directly reached by the current node
-    by going a certain distance.
-    :return nodes: List of nodes.
+    by going a certain distance. Constructs all edges of the tree.
+    :return edges: List of edges.
     """
     lines = sys.stdin.readlines()
     num_nodes, num_roads = lines.pop(0).split(' ')
@@ -35,24 +36,25 @@ def construct_graph():
         nodes[int(connections[0])].neighbourweights.append([nodes[int(connections[1])], int(connections[2])])
         nodes[int(connections[1])].neighbourweights.append([nodes[int(connections[0])], int(connections[2])])
 
-    return nodes
-
-
-def kruskal(nodes):
-    """
-    Construct the minimal spanning tree, represented by a list of edges (tuples of node, neighbour node and weight)
-    :param nodes: List of nodes.
-    :return MST: Minimal spanning tree.
-    """
-    MST = []
     edges = set()
-
     for node in nodes:
         for neighbour, weight in node.neighbourweights:
             if (neighbour, node, weight) not in edges:
                 edges.add((node, neighbour, weight))
 
+    return edges
+
+
+def kruskal(edges):
+    """
+    Construct the minimal spanning tree, represented by a list of edges (tuples of node, neighbour node and weight)
+    :param edges: List of edged, i.e list of tuples with node, neighbour node and weight.
+    :return MST: Minimal spanning tree.
+    """
+    MST = []
+    time_ = time()
     edges = sorted(edges, key=lambda w: w[2])
+    print('Sort time: ', time()-time_)
 
     for edge in edges:
         node, neighbour, weight = edge
@@ -100,9 +102,14 @@ def union(node, neighbour):
 
 
 if __name__ == '__main__':
-    nodes = construct_graph()
-    MST = kruskal(nodes)
+    time_start = time()
+    edges = construct_graph()
+    construction_time = time()
+    print('Construction time: ', construction_time-time_start)
+    MST = kruskal(edges)
+    print('Algo time: ', time() - construction_time)
     sum_weights = 0
     for edge in MST:
         sum_weights += edge[2]
-    print(sum_weights)
+    #print(sum_weights)
+    print('Total time: ', time() - time_start)
