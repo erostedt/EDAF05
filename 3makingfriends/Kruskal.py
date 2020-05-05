@@ -1,5 +1,6 @@
 import sys
 
+
 class Node:
     """
     Class which constructs a Node. This kind of node has 4 attributes. Its own name/which node it is (node),
@@ -45,6 +46,7 @@ def kruskal(nodes):
     """
     MST = []
     edges = set()
+
     for node in nodes:
         for neighbour, weight in node.neighbourweights:
             if (neighbour, node, weight) not in edges:
@@ -64,14 +66,14 @@ def find(node):
     """
     Finds canonical member of node.
     :param node: Node object
-    :return member: Canonical member.
+    :return root: Canonical member.
     """
-    member = node
-    while member.parent:
-        member = member.parent
+    root = node
+    while root.parent:
+        root = root.parent
     while node.parent:
-        node.parent, node = member, node.parent
-    return member
+        node.parent, node = root, node.parent
+    return root
 
 
 def union(node, neighbour):
