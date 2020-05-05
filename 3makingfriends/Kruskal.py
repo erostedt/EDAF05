@@ -1,5 +1,4 @@
 import sys
-from time import time
 
 
 class Node:
