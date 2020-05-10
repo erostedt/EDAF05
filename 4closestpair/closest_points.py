@@ -80,7 +80,7 @@ def brute_force(points):
     :param points: List of points to be compared.
     :return sq_dist: Squared Euclidian distance between the closest points.
     """
-    sq_dist = sys.maxsize
+    sq_dist = float('Inf')
     for point in points:
         for other_point in points:
             if point is not other_point:
@@ -100,9 +100,11 @@ def closest_overlap(points, sq_dist, divisor):
         squared Euclidian distance between the two closest point that are seperated by the divisor line.
     """
     dist = math.sqrt(sq_dist)
+
     feasible_points = [point for point in points if abs(point[0] - divisor) < dist]
     num_feasible_points = len(feasible_points)
-    overlap_sq_dist = sys.maxsize
+
+    overlap_sq_dist = float('Inf')
     for point_idx, feasible_point in enumerate(feasible_points):
         cmp_points = feasible_points[point_idx + 1: point_idx + min(15, num_feasible_points - point_idx)]
         for cmp_point in cmp_points:
