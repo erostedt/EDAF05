@@ -5,17 +5,17 @@ import math
 def parse():
     """
     Reads the file of points and converts into list of tuples (list of points). Returns points sorted in ascending order
-    with respect the different variables.
+    with respect to the first variable (x).
     :return:
             1. List of points (tuples), sorted in ascending order with respect to first variable
-            2. List of points (tuples), sorted in ascending order with respect to second variable
-            3. Number of points.
+            2. Number of points.
     """
     points = sys.stdin.readlines()
     # Convert list of strings which represent points into points represented as list of integer tuples.
     points = [tuple(map(int, point.strip().split())) for point in points]
     num_points = points.pop(0)
-    return sorted(points, key=lambda x: x[0]), sorted(points, key=lambda x: x[1]), num_points[0]
+    points.sort(key=lambda x: x[0])
+    return points, num_points[0]
 
 
 def closest_points():
@@ -25,17 +25,19 @@ def closest_points():
     when the distance shall be returned, the square root of the squared distance is returned.
     :return: Distance between closest points in a plane.
     """
-    px, py, num_points = parse()
-    sq_dist = _closest_points(px, py, num_points)
-    return format(math.sqrt(sq_dist), '.6f')
+    px, num_points = parse()
+    if num_points < 2:
+        print('Not enough points')
+        return None
+    sq_dist = _closest_points(px, num_points)
+    return format(math.sqrt(sq_dist), '.6f')  
 
 
-def _closest_points(px, py, num_points):
+def _closest_points(px, num_points):
     """
     Recursive function which calculates closest pair of points on a plane, based on a divide and conquer method.
     Time complexity: O(n logn)
     :param px: Points sorted in ascending order with respect to the first variable (x).
-    :param py: Points sorted in ascending order with respect to the second variable (y).
     :param num_points: Number of points.
     :return: Smallest squared distance.
     """
@@ -43,25 +45,12 @@ def _closest_points(px, py, num_points):
     divisor = px[middle][0]
 
     if num_points < 4:
-        return brute_force(px)
+        return base_case(px, num_points)
 
-    lpx = px[:middle]
-    rpx = px[middle:]
-
-    # Construct set for O(1) lookup.
-    lp_set = set(lpx)
-
-    lpy, rpy = [], []
-    for point in py:
-        if point in lp_set:
-            lpy.append(point)
-        else:
-            rpy.append(point)
-
-    left_dist = _closest_points(lpx, lpy, middle)
-    right_dist = _closest_points(rpx, rpy, num_points - middle)
+    left_dist = _closest_points(px[:middle], middle)
+    right_dist = _closest_points(px[middle:], num_points - middle)
     sq_dist = min(left_dist, right_dist)
-    return min(sq_dist, closest_overlap(py, sq_dist, divisor))
+    return min(sq_dist, closest_overlap(px, sq_dist, divisor))
 
 
 def sq_distance(p1, p2):
@@ -74,20 +63,15 @@ def sq_distance(p1, p2):
     return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2
 
 
-def brute_force(points):
+def base_case(points, num_points):
     """
     Brute force method. Only gets called if there are two or three points to compare.
     :param points: List of points to be compared.
-    :return sq_dist: Squared Euclidian distance between the closest points.
+    :param num_points: Number of points
+    :return: Squared Euclidian distance between the closest points.
     """
-    sq_dist = float('Inf')
-    for point in points:
-        for other_point in points:
-            if point is not other_point:
-                cmp_dist = sq_distance(point, other_point)
-                if cmp_dist < sq_dist:
-                    sq_dist = cmp_dist
-    return sq_dist
+    return sq_distance(points[0], points[1]) if num_points == 2 \
+    else min(sq_distance(points[0], points[1]), sq_distance(points[0], points[2]))
 
 
 def closest_overlap(points, sq_dist, divisor):
@@ -103,12 +87,14 @@ def closest_overlap(points, sq_dist, divisor):
 
     feasible_points = [point for point in points if abs(point[0] - divisor) < dist]
     num_feasible_points = len(feasible_points)
+    feasible_points.sort(key=lambda x: x[1])
 
     overlap_sq_dist = float('Inf')
     for point_idx, feasible_point in enumerate(feasible_points):
         cmp_points = feasible_points[point_idx + 1: point_idx + min(15, num_feasible_points - point_idx)]
         for cmp_point in cmp_points:
             overlap_sq_dist = min(sq_distance(feasible_point, cmp_point), overlap_sq_dist)
+
     return overlap_sq_dist
 
 
