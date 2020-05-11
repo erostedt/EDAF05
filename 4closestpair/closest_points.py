@@ -70,8 +70,12 @@ def base_case(points, num_points):
     :param num_points: Number of points
     :return: Squared Euclidian distance between the closest points.
     """
-    return sq_distance(points[0], points[1]) if num_points == 2 \
-    else min(sq_distance(points[0], points[1]), sq_distance(points[0], points[2]))
+    d = float('Inf')
+    for point in points:
+        for other_point in points:
+            if point is not other_point:
+                d = min(d, sq_distance(point, other_point))
+    return d
 
 
 def closest_overlap(points, sq_dist, divisor):
