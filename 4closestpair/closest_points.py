@@ -21,16 +21,15 @@ def parse():
 def closest_points():
     """
     Finds the closest points on a plane. Calls for input parsing, and starts recursive divide and conquer method.
-    Distances are measured as squared Euclidian norm, squared since square root is a slow operation. But in the end
-    when the distance shall be returned, the square root of the squared distance is returned.
+    Distances are measured as Euclidian norm.
     :return: Distance between closest points in a plane.
     """
     px, num_points = parse()
     if num_points < 2:
         print('Not enough points')
         return None
-    sq_dist = _closest_points(px, num_points)
-    return format(math.sqrt(sq_dist), '.6f')  
+    dist = _closest_points(px, num_points)
+    return format(dist, '.6f')  
 
 
 def _closest_points(px, num_points):
@@ -39,7 +38,7 @@ def _closest_points(px, num_points):
     Time complexity: O(n logn)
     :param px: Points sorted in ascending order with respect to the first variable (x).
     :param num_points: Number of points.
-    :return: Smallest squared distance.
+    :return: Smallest distance.
     """
     middle = num_points // 2
     divisor = px[middle][0]
@@ -49,56 +48,54 @@ def _closest_points(px, num_points):
 
     left_dist = _closest_points(px[:middle], middle)
     right_dist = _closest_points(px[middle:], num_points - middle)
-    sq_dist = min(left_dist, right_dist)
-    return min(sq_dist, closest_overlap(px, sq_dist, divisor))
+    dist = min(left_dist, right_dist)
+    return min(dist, closest_overlap(px, dist, divisor))
 
 
-def sq_distance(p1, p2):
+def distance(p1, p2):
     """
-    Calculates the squared Euclidian distance between two points in a plane.
+    Calculates the Euclidian distance between two points in a plane.
     :param p1: Point 1.
     :param p2: Point 2.
-    :return: Squared Euclidian distance between the points.
+    :return: Euclidian distance between the points.
     """
-    return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2
+    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
 
 def base_case(points):
     """
     Brute force method. Only gets called if there are two or three points to compare.
     :param points: List of points to be compared.
-    :return d: Squared Euclidian distance between the closest points.
+    :return d: Euclidian distance between the closest points.
     """
-    sq_dist = float('Inf')
+    dist = float('Inf')
     for point in points:
         for other_point in points:
             if point is not other_point:
-                sq_dist = min(sq_dist, sq_distance(point, other_point))
-    return sq_dist
+                dist = min(dist, distance(point, other_point))
+    return dist
 
 
-def closest_overlap(points, sq_dist, divisor):
+def closest_overlap(points, dist, divisor):
     """
-    Finds the squared Euclidian distance between the two closest point that are seperated by the divisor line.
+    Finds the Euclidian distance between the two closest point that are seperated by the divisor line.
     :param points: List of points.
-    :param sq_dist: Squared distance of closest point on the same side of divisor line.
+    :param dist: distance of closest point on the same side of divisor line.
     :param divisor: Position of divisor line (with respect to first variable, x).
-    :return overlap_sq_dist:
-        squared Euclidian distance between the two closest point that are seperated by the divisor line.
+    :return overlap_dist:
+        Euclidian distance between the two closest point that are seperated by the divisor line.
     """
-    dist = math.sqrt(sq_dist)
-
     strip_points = [point for point in points if abs(point[0] - divisor) < dist]
     num_strip_points = len(strip_points)
     strip_points.sort(key=lambda x: x[1])
 
-    overlap_sq_dist = float('Inf')
+    overlap_dist = float('Inf')
     for point_idx, strip_point in enumerate(strip_points):
         feasible_points = strip_points[point_idx + 1: point_idx + min(15, num_strip_points - point_idx)]
         for feasible_point in feasible_points:
-            overlap_sq_dist = min(sq_distance(strip_point, feasible_point), overlap_sq_dist)
+            overlap_dist = min(distance(strip_point, feasible_point), overlap_dist)
 
-    return overlap_sq_dist
+    return overlap_dist
 
 
 if __name__ == '__main__':
