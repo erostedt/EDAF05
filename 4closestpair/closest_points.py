@@ -45,7 +45,7 @@ def _closest_points(px, num_points):
     divisor = px[middle][0]
 
     if num_points < 4:
-        return base_case(px, num_points)
+        return base_case(px)
 
     left_dist = _closest_points(px[:middle], middle)
     right_dist = _closest_points(px[middle:], num_points - middle)
@@ -63,25 +63,24 @@ def sq_distance(p1, p2):
     return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2
 
 
-def base_case(points, num_points):
+def base_case(points):
     """
     Brute force method. Only gets called if there are two or three points to compare.
     :param points: List of points to be compared.
-    :param num_points: Number of points
-    :return: Squared Euclidian distance between the closest points.
+    :return d: Squared Euclidian distance between the closest points.
     """
-    d = float('Inf')
+    sq_dist = float('Inf')
     for point in points:
         for other_point in points:
             if point is not other_point:
-                d = min(d, sq_distance(point, other_point))
-    return d
+                sq_dist = min(sq_dist, sq_distance(point, other_point))
+    return sq_dist
 
 
 def closest_overlap(points, sq_dist, divisor):
     """
     Finds the squared Euclidian distance between the two closest point that are seperated by the divisor line.
-    :param points: List of points, sorted with respect to second variable (y).
+    :param points: List of points.
     :param sq_dist: Squared distance of closest point on the same side of divisor line.
     :param divisor: Position of divisor line (with respect to first variable, x).
     :return overlap_sq_dist:
@@ -89,15 +88,15 @@ def closest_overlap(points, sq_dist, divisor):
     """
     dist = math.sqrt(sq_dist)
 
-    feasible_points = [point for point in points if abs(point[0] - divisor) < dist]
-    num_feasible_points = len(feasible_points)
-    feasible_points.sort(key=lambda x: x[1])
+    strip_points = [point for point in points if abs(point[0] - divisor) < dist]
+    num_strip_points = len(strip_points)
+    strip_points.sort(key=lambda x: x[1])
 
     overlap_sq_dist = float('Inf')
-    for point_idx, feasible_point in enumerate(feasible_points):
-        cmp_points = feasible_points[point_idx + 1: point_idx + min(15, num_feasible_points - point_idx)]
-        for cmp_point in cmp_points:
-            overlap_sq_dist = min(sq_distance(feasible_point, cmp_point), overlap_sq_dist)
+    for point_idx, strip_point in enumerate(strip_points):
+        feasible_points = strip_points[point_idx + 1: point_idx + min(15, num_strip_points - point_idx)]
+        for feasible_point in feasible_points:
+            overlap_sq_dist = min(sq_distance(strip_point, feasible_point), overlap_sq_dist)
 
     return overlap_sq_dist
 
