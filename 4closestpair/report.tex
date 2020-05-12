@@ -6,18 +6,24 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \pagestyle{empty}
 
-\title{Closest Pair Report}
-\author{Author 1 and Author 2}
+\title{EDAF05 - Closest Pairs}
+\author{Eric Rostedt \\ Mattias Pettersson}
 
 \begin{document}
-  \maketitle
+\maketitle
 
-  \section{Results}
+\section{Results}
 
-  \todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
+\todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
 
-  \section{Implementation details}
+When we ran the file check\_solution.sh on our script we got that all of our solutions were correct. When running on the largest input using pypy we get a running time of about 12 seconds, where approximately 3 seconds are spent parsing the data (reading lines, insert to list and sorting) and the other 9 seconds are spent in the algorithm. 
 
-  \todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}
+\section{Implementation details}
 
+\todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}
+We read the data from the input files using sys.stdin.readlines() and sorted the list of points according to their x-variable. We then went through the steps from the course lecture, creating a recursive divide and conquer algorithm by dividing the number of points into smaller, equally long, lists.\\
+
+We only used lists when implementing this algorithm. Lists were used to store the points (as tuples consisting of their x- and y-coordinate) and then divided into smaller lists to quicker find the shortest distance of the entire set.\\
+
+The total running time was 13 seconds.\\
 \end{document}
