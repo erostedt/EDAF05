@@ -10,9 +10,8 @@ def parse():
     :return penalty_pairs: Dictionary with pairs of characters as keys and values from the penalty matrix.
     :return queries: List of queries (tuples) to be testd on.
     """
-    lines = sys.stdin.readlines()
-    
-    lines = [line for line in lines]
+    lines = list(sys.stdin.readlines())
+ 
     characters = lines.pop(0).strip().split()
     num_chars = len(characters)
     penalty_matrix = [list(map(int, line.rstrip().split())) for line in lines[:num_chars]]
