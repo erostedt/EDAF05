@@ -69,7 +69,6 @@ def sequence_alignment(string_1, string_2, penalty_pairs, gap_penalty):
             align.append( (string_1[i-1], '*') )
             i -= 1
         
-
         else:
             align.append( ('*', string_2[j-1]) )
             j -= 1
