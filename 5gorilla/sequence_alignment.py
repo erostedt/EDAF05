@@ -1,6 +1,5 @@
 import sys
 from collections import defaultdict
-from copy import copy
 
 
 def parse():
