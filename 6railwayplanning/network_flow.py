@@ -8,11 +8,18 @@ class Node:
     Node class. A node holds its name, set of index of neighbours and parent node.
     """
     def __init__(self, name):
+        """
+        Initializes node object.
+        :param name: node name
+        """
         self.name = name
         self.neighbours = set()
         self.parent = None
 
     def __eq__(self, other):
+        """
+        Checks if two nodes have the same name. Since we have unique nodes, if the names are the same, then it must be the same node.
+        """
         return True if self.name == other.name else False
 
 class ResidualGraph:
