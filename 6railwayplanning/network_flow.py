@@ -37,7 +37,6 @@ class ResidualGraph:
         self.remaining_capacities = defaultdict(int)
         self.nodes = defaultdict(Node)
         self.edges_to_add = []
-        self.num_nodes_in_full = None
         self.source = None
         self.sink = None
 
@@ -50,21 +49,6 @@ class ResidualGraph:
         rev_edge = (edge[1], edge[0])
         self.remaining_capacities[edge] = val
         self.remaining_capacities[rev_edge] = val
-
-        if edge[0] not in self.nodes:
-            self.nodes[edge[0]] = Node(edge[0]) 
-            if edge[0] == 0:
-                self.source = self.nodes[edge[0]]
-            elif edge[0] == self.num_nodes_in_full - 1:
-                self.sink = self.nodes[edge[0]]
-
-        if edge[1] not in self.nodes:
-            self.nodes[edge[1]] = Node(edge[1]) 
-            if edge[1] == 0:
-                self.source = self.nodes[edge[1]]
-            elif edge[1] == self.num_nodes_in_full - 1:
-                self.sink = self.nodes[edge[1]]
-
         self.nodes[edge[0]].neighbours.add(edge[1])
         self.nodes[edge[1]].neighbours.add(edge[0])
 
@@ -79,6 +63,8 @@ class ResidualGraph:
 def parse():
     """
     Parses the input and constructs an residual graph.
+    :return graph: Residual graph.
+    :return min_flow: Minimum tolerated flow.
     """
     lines = sys.stdin.readlines()
 
@@ -90,21 +76,26 @@ def parse():
     
     idx_to_edge = defaultdict(tuple)
     graph = ResidualGraph()
-    graph.num_nodes_in_full = num_nodes
 
     for i, edge in enumerate(_edges):
         u, v, c = edge
-        if i not in _edges_to_add:
-            if u not in graph.nodes:
-                graph.nodes[u] = Node(u)
-                if u == 0:
-                    graph.source = graph.nodes[u]
-            
-            if v not in graph.nodes:
-                graph.nodes[v] = Node(v)
-                if v == num_nodes - 1:
-                    graph.sink = graph.nodes[v]
 
+        # Add nodes if they are missing
+        if u not in graph.nodes:
+            graph.nodes[u] = Node(u)
+            if u == 0:
+                graph.source = graph.nodes[u]
+            if u == num_nodes - 1:
+                graph.sink = graph.nodes[u]
+            
+        if v not in graph.nodes:
+            graph.nodes[v] = Node(v)
+            if v == 0:
+                graph.source = graph.nodes[v]
+            if v == num_nodes - 1:
+                graph.sink = graph.nodes[v]
+
+        if i not in _edges_to_add:
             graph.insert_edge((u, v), c)
 
         else:
@@ -167,7 +158,6 @@ if __name__ == "__main__":
     Finds the number routes that we can remove and all the flow.
     """
     graph, min_flow = parse()
-
     while not graph.source or not graph.sink:
         u, v, c = graph.edges_to_add.pop()
         graph.insert_edge((u, v), c)
