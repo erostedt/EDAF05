@@ -6,18 +6,27 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \pagestyle{empty}
 
-\title{Stealing Railways Report}
-\author{Author 1 and Author 2}
+\title{EDAF05 - Assignment 6}
+\author{Eric Rostedt \\ Mattias Pettersson}
 
 \begin{document}
-  \maketitle
+\maketitle
 
-  \section{Results}
+\section{Results}
 
-  \todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
+\todo[inline]{Briefly comment the results, did the script say all your solutions were correct? Approximately how long time does it take for the program to run on the largest input? What takes the majority of the time?}
+When we run the ./check\_solution file we get that they were all correct. The largest input take approximately 1.3 seconds to run. Out of that time approximately 0.3 is spent constructing the smaller tree and the rest is spent adding nodes and running the algorithm.
 
-  \section{Implementation details}
+\section{Implementation details}
 
-  \todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}
+\todo[inline]{How did you implement the solution? Which data structures were used? Which modifications to these data structures were used? What is the overall running time? Why?}\\
+We implemented the solution by creating a tree that we could later find the flow in by using a BFS algorithm. We started by creating a tree without the routes that were later to be removed. This way we could add routes instead of removing them, decreasing the total running time.\\
+
+We used a Ford-Fulkerson algorithm together with a breadth-first-search algorithm (Edmond-Karp). We created custom classes for the nodes and the residual graph. As a result the nodes contained their name, their neighbours and their own parent. The residual graph contained the remaining flows, its nodes, the source node (Moscow), the sink node (Lund), and a list of all edges remaining to be (possibly) added.
+
+We then ran the Edmond-Karp algorithm on the entire tree, adding an edge on every iteration, until the number of students traveling was higher than the required amount.
+
+Total time: 2.6 seconds.
+
 
 \end{document}
