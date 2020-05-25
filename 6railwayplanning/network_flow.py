@@ -42,7 +42,7 @@ class ResidualGraph:
 
     def insert_edge(self, edge, val):
         """
-        Adds an edge to the graph. Creates new nodes if node is missing, if so also checks if the node is source or sink.
+        Adds an edge to the graph.
         :param edge: edge to be added.
         :param val: capacity of the added edge
         """
