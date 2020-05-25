@@ -27,7 +27,6 @@ class ResidualGraph:
     Residual Graph class. Contains the edges with remaining capacities as dict with edge as key and capacity as value.
     Dict of nodes.
     Edges to add to the (possibly) incomplete network.
-    number of nodes in the full network.
     Source and sink node
     """
     def __init__(self):
@@ -155,7 +154,7 @@ def ford_fulkerson(graph):
 
 if __name__ == "__main__":
     """
-    Finds the number routes that we can remove and all the flow.
+    Finds the number routes that we can remove and max flow of that graph.
     """
     graph, min_flow = parse()
     while not graph.source or not graph.sink:
